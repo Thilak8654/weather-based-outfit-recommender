@@ -10,21 +10,21 @@ function CitySearch() {
     const [suggestions, setSuggestions] = useState([]);
     const { dispatch } = useContext(WeatherContext);
 
-  const fetchSuggestions = useCallback(async () => {
-    if (!city.trim()) {
-      setSuggestions([]);
-      return;
-    }
+    const fetchSuggestions = useCallback(async () => {
+        if (!city.trim()) {
+            setSuggestions([]);
+            return;
+        }
 
-    try {
-      const res = await geoApi.get("", { params: { q: city } });
-      setSuggestions(res.data || []);
-    } catch (err) {
-      console.error("Auto-suggest error:", err.message);
-    }
-  }, [city]); 
+        try {
+            const res = await geoApi.get("", { params: { q: city } });
+            setSuggestions(res.data || []);
+        } catch (err) {
+            console.error("Auto-suggest error:", err.message);
+        }
+    }, [city]);
 
-  useDebounce(fetchSuggestions, [city], 400);
+    useDebounce(fetchSuggestions, [city], 400);
 
     const fetchWeather = async (cityName) => {
         try {
@@ -38,7 +38,9 @@ function CitySearch() {
     };
 
     const handleChange = (e) => {
+        // const input = e.target.value;
         setCity(e.target.value);
+        // fetchSuggestions(input);
     };
 
 
@@ -58,7 +60,7 @@ function CitySearch() {
                     {suggestions.map((place, i) => (
                         <li
                             key={i}
-                            className="px-3 py-2 hover:bg-blue-100 cursor-pointer dark:hover:bg-blue-800"
+                            className="px-4 py-2 rounded bg-blue-500 text-white dark:text-white hover:bg-blue-600 dark:hover:bg-blue-700"
                             onClick={() => {
                                 fetchWeather(place.name);
                                 setCity("");
