@@ -2,12 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 ## 🌦️ Sample Weather-Triggering City Searches
-		Try searching for these real cities to trigger different weather and outfit suggestions: \
-        1. Dubai \
-        2. San Fransisco \
-        3. Bangalore/Bengaluru \
-        4. London\
-        5. Paris\
+    Try searching for these real cities to trigger different weather and outfit suggestions: \
+        1. Dubai
+        2. San Fransisco
+        3. Bangalore/Bengaluru
+        4. London
+        5. Paris
 
 ## Available Scripts
 
