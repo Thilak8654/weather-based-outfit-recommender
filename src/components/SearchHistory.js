@@ -28,7 +28,7 @@ const SearchHistory = () => {
                 {history.map((city, i) => (
                     <li
                         key={i}
-                    className="px-3 py-1 bg-blue-200 dark:bg-blue-800 text-gray-800 dark:text-white rounded cursor-pointer hover:bg-blue-400 dark:hover:bg-blue-600 transition"                        onClick={() => redoSearch(city)}
+                        className="px-3 py-1 bg-blue-200 dark:bg-blue-800 text-gray-800 dark:text-white rounded cursor-pointer hover:bg-blue-400 dark:hover:bg-blue-600 transition" onClick={() => redoSearch(city)}
                     >
                         {city}
                     </li>

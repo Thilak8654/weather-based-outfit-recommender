@@ -13,19 +13,19 @@ const OutfitSuggestion = () => {
 
     const suggestions = [];
     if (temp < 15) {
-        suggestions.push("It's cold. Wear a jacket");
+        suggestions.push("🧥 It's cold. Wear a jacket");
     } else if (temp > 25) {
-        suggestions.push("It's Hot. Wear T-shirt and Shorts ");
+        suggestions.push("👕 It's Hot. Wear T-shirt and Shorts ");
     }
 
     if (windSpeed > 20) {
-        suggestions.push("Its windy - wear a windbreaker");
+        suggestions.push(" 🌬️ Its windy - wear a windbreaker");
     }
 
     if (condition.includes("rain")) {
-        suggestions.push("Take an Umberalla");
+        suggestions.push("☔ Take an Umberalla");
     } else if (condition.includes("sun")) {
-        suggestions.push("Wear sunglasses and sunscreen");
+        suggestions.push("🕶️ Wear sunglasses and sunscreen");
     }
     return (
         <div className="bg-yellow-100 dark:bg-yellow-900 rounded-lg p-4 mb-4 shadow">

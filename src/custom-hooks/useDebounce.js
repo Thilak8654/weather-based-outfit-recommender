@@ -8,19 +8,19 @@ import { useEffect, useRef } from 'react';
  */
 
 const useDebounce = (callback, dependencies = [], delay = 1000) => {
-  const callbackRef = useRef(callback);
+    const callbackRef = useRef(callback);
 
-  useEffect(() => {
-    callbackRef.current = callback;
-  }, [callback]);
+    useEffect(() => {
+        callbackRef.current = callback;
+    }, [callback]);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      callbackRef.current();
-    }, delay);
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            callbackRef.current();
+        }, delay);
 
-    return () => clearTimeout(handler);
-  }, [...dependencies, delay]); 
+        return () => clearTimeout(handler);
+    }, [...dependencies, delay]);
 };
 
 export default useDebounce;

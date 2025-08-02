@@ -38,9 +38,8 @@ function CitySearch() {
     };
 
     const handleChange = (e) => {
-        // const input = e.target.value;
         setCity(e.target.value);
-        // fetchSuggestions(input);
+
     };
 
 
@@ -64,7 +63,9 @@ function CitySearch() {
                             onClick={() => {
                                 fetchWeather(place.name);
                                 setCity("");
+                                setSuggestions([]);
                             }}
+
                         >
                             {place.name}, {place.country}
                         </li>
