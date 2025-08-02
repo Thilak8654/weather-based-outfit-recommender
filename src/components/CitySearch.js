@@ -1,24 +1,35 @@
 import React, { useState, useContext } from "react";
 import { WeatherContext } from "../context/WeatherContext";
+import  weatherApi  from '../interceptors/weatherApi'
 
-const API_KEY = "135b1994551a3d091e2f64e6cd4b706c";
 
 function CitySearch() {
   const [city, setCity] = useState("");
   const { dispatch } = useContext(WeatherContext);
 
-  const fetchWeather = async (cityName) => {
+    const fetchWeather = async (cityName) => {
     try {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
-      );
-      if (!res.ok) throw new Error("City not found");
-      const data = await res.json();
-      dispatch({ type: "SET_WEATHER", payload: data });
+      const res = await weatherApi.get("weather", {
+        params: { q: cityName },
+      });
+      dispatch({ type: "SET_WEATHER", payload: res.data });
     } catch (err) {
-      dispatch({ type: "SET_ERROR", payload: err.message });
+      dispatch({ type: "SET_ERROR", payload: err.response?.data?.message || err.message });
     }
   };
+  
+//   const fetchWeather = async (cityName) => {
+//     try {
+//       const res = await fetch(
+//         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
+//       );
+//       if (!res.ok) throw new Error("City not found");
+//       const data = await res.json();
+//       dispatch({ type: "SET_WEATHER", payload: data });
+//     } catch (err) {
+//       dispatch({ type: "SET_ERROR", payload: err.message });
+//     }
+//   };
 
   const handleSearch = () => {
     if (city.trim()) {

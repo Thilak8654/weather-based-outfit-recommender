@@ -1,11 +1,11 @@
 import React, {createContext, useReducer} from 'react';
-import { WeatherReducer } from './WeatherReducer';
+import { initialState, WeatherReducer } from './WeatherReducer';
 
 
 export const WeatherContext = createContext();
 
 export function WeatherProvider({children}){
-    const [state, dispatch] = useReducer(WeatherReducer);
+    const [state, dispatch] = useReducer(WeatherReducer, initialState);
     return (
         <WeatherContext.Provider value={{state, dispatch}}>
             {children}
