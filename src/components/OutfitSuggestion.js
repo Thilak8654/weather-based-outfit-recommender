@@ -22,10 +22,21 @@ const OutfitSuggestion = () => {
         suggestions.push(" 🌬️ Its windy - wear a windbreaker");
     }
 
-    if (condition.includes("rain")) {
+    if (condition.includes("rain") || condition.includes("drizzle")) {
         suggestions.push("☔ Take an Umberalla");
-    } else if (condition.includes("sun")) {
+    }
+    if (condition.includes("clear") || condition.includes("sun")) {
         suggestions.push("🕶️ Wear sunglasses and sunscreen");
+    }
+    if (condition.includes("cloud")) {
+        suggestions.push("🧶 Consider a light sweater, it's cloudy.");
+    }
+    if (
+        condition.includes("fog") ||
+        condition.includes("mist") ||
+        condition.includes("haze")
+    ) {
+        suggestions.push("🌁 It's foggy – light layers and visibility caution");
     }
     return (
         <div className="bg-yellow-100 dark:bg-yellow-900 rounded-lg p-4 mb-4 shadow">
