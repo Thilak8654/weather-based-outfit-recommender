@@ -1,61 +1,76 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { WeatherContext } from "../context/WeatherContext";
-import  weatherApi  from '../interceptors/weatherApi'
+import weatherApi from '../interceptors/weatherApi';
+import geoApi from "../interceptors/geocodingApi";
+import useDebounce from "../custom-hooks/useDebounce";
 
 
 function CitySearch() {
-  const [city, setCity] = useState("");
-  const { dispatch } = useContext(WeatherContext);
+    const [city, setCity] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const { dispatch } = useContext(WeatherContext);
+
+  const fetchSuggestions = useCallback(async () => {
+    if (!city.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const res = await geoApi.get("", { params: { q: city } });
+      setSuggestions(res.data || []);
+    } catch (err) {
+      console.error("Auto-suggest error:", err.message);
+    }
+  }, [city]); 
+
+  useDebounce(fetchSuggestions, [city], 400);
 
     const fetchWeather = async (cityName) => {
-    try {
-      const res = await weatherApi.get("weather", {
-        params: { q: cityName },
-      });
-      dispatch({ type: "SET_WEATHER", payload: res.data });
-    } catch (err) {
-      dispatch({ type: "SET_ERROR", payload: err.response?.data?.message || err.message });
-    }
-  };
-  
-//   const fetchWeather = async (cityName) => {
-//     try {
-//       const res = await fetch(
-//         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
-//       );
-//       if (!res.ok) throw new Error("City not found");
-//       const data = await res.json();
-//       dispatch({ type: "SET_WEATHER", payload: data });
-//     } catch (err) {
-//       dispatch({ type: "SET_ERROR", payload: err.message });
-//     }
-//   };
+        try {
+            const res = await weatherApi.get("weather", {
+                params: { q: cityName },
+            });
+            dispatch({ type: "SET_WEATHER", payload: res.data });
+        } catch (err) {
+            dispatch({ type: "SET_ERROR", payload: err.response?.data?.message || err.message });
+        }
+    };
 
-  const handleSearch = () => {
-    if (city.trim()) {
-      fetchWeather(city.trim());
-      setCity("");
-    }
-  };
+    const handleChange = (e) => {
+        setCity(e.target.value);
+    };
 
-  return (
-    <div className="flex gap-2 mb-4">
-      <input
-        type="text"
-        className="flex-1 px-3 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        placeholder="Enter city name"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-      />
-      <button
-        onClick={handleSearch}
-        className="px-4 py-2 flex-shrink-0 rounded bg-blue-500 text-white hover:bg-blue-600"
-      >
-        Search
-      </button>
-    </div>
-  );
+
+
+
+    return (
+        <div className="mb-4 relative">
+            <input
+                className="w-full px-3 py-2 border rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                placeholder="Enter city"
+                value={city}
+                onChange={handleChange}
+                onKeyDown={(e) => e.key === "Enter" && fetchWeather(city)}
+            />
+            {suggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white shadow-lg dark:bg-gray-700">
+                    {suggestions.map((place, i) => (
+                        <li
+                            key={i}
+                            className="px-3 py-2 hover:bg-blue-100 cursor-pointer dark:hover:bg-blue-800"
+                            onClick={() => {
+                                fetchWeather(place.name);
+                                setCity("");
+                            }}
+                        >
+                            {place.name}, {place.country}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
 }
 
 export default CitySearch;
