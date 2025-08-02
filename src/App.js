@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import CitySearch from "./components/CitySearch";
 import './App.css';
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
        <h1 className="text-2xl font-bold text-center mb-6">
         🌤️ Weather-Based Outfit Recommender
       </h1>
+      <CitySearch />
     </div>
   );
 }
